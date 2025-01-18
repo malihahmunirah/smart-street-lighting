@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Streetlight</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='chart.js') }}"></script>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/data');
+            const data = await response.json();
+
+            // Update real-time data fields
+            document.getElementById('ir-status').textContent = data.IRs.join(", ");
+            document.getElementById('led-status').textContent = data.LEDs.join(", ");
+            document.getElementById('rain-status').textContent = data["Rain Sensor"] ? "RAIN DETECTED" : "NO RAIN";
+            document.getElementById('temperature').textContent = data["Temperature"].toFixed(2);
+            document.getElementById('humidity').textContent = data["Humidity"].toFixed(2);
+            document.getElementById('energy-saved').textContent = data["Energy Saved"] + "%";
+
+            // Fetch historical data and update charts
+            const historyResponse = await fetch('/history');
+            const historyData = await historyResponse.json();
+            updateCharts(historyData);
+        }
+
+        function updateCharts(history) {
+            irChart.data.labels = history.timestamps;
+            irChart.data.datasets.forEach((dataset, index) => {
+                dataset.data = history.IRs.map(ir => ir[index]);
+            });
+
+            ledChart.data.labels = history.timestamps;
+            ledChart.data.datasets.forEach((dataset, index) => {
+                dataset.data = history.LEDs.map(led => led[index]);
+            });
+
+            rainChart.data.labels = history.timestamps;
+            rainChart.data.datasets[0].data = history["Rain Sensor"];
+
+            tempChart.data.labels = history.timestamps;
+            tempChart.data.datasets[0].data = history["Temperature"];
+
+            humidityChart.data.labels = history.timestamps;
+            humidityChart.data.datasets[0].data = history["Humidity"];
+
+            irChart.update();
+            ledChart.update();
+            rainChart.update();
+            tempChart.update();
+            humidityChart.update();
+        }
+
+        setInterval(fetchData, 2000); // Refresh data every 2 seconds
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Smart Streetlight IoT Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/analysis">Analysis</a></li> <!-- Added link to Analysis page -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- First Layer -->
+        <div class="layer">
+            <section class="real-time-data">
+                <h2>Real-Time Data</h2>
+                <p>IR Sensors: <span id="ir-status">Loading...</span></p>
+                <p>LED Brightness: <span id="led-status">Loading...</span></p>
+                <p>Rain Sensor: <span id="rain-status">Loading...</span></p>
+                <p>Temperature: <span id="temperature">Loading...</span> °C</p>
+                <p>Humidity: <span id="humidity">Loading...</span> %</p>
+                <p>Energy Saved: <span id="energy-saved">Loading...</span></p>
+            </section>
+            <section>
+                <h3>IR Sensor Status</h3>
+                <canvas id="irChart"></canvas>
+            </section>
+        </div>
+
+        <!-- Second Layer -->
+        <div class="layer">
+            <section>
+                <h3>LED Brightness</h3>
+                <canvas id="ledChart"></canvas>
+            </section>
+            <section>
+                <h3>Rain Sensor Readings</h3>
+                <canvas id="rainChart"></canvas>
+            </section>
+        </div>
+
+        <!-- Third Layer -->
+        <div class="layer">
+            <section>
+                <h3>Temperature</h3>
+                <canvas id="tempChart"></canvas>
+            </section>
+            <section>
+                <h3>Humidity</h3>
+                <canvas id="humidityChart"></canvas>
+            </section>
+        </div>
+
+        <!-- Button to go to Analysis Page -->
+        <button onclick="window.location.href='/analysis';">Go to Analysis</button> <!-- Button linking to analysis.html -->
+    </main>
+    <footer>
+        <p>&copy; 2025 Smart Streetlight Project</p>
+    </footer>
+    <script>
+        const ctxIR = document.getElementById('irChart').getContext('2d');
+        const ctxLED = document.getElementById('ledChart').getContext('2d');
+        const ctxRain = document.getElementById('rainChart').getContext('2d');
+        const ctxTemp = document.getElementById('tempChart').getContext('2d');
+        const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
+
+        const irChart = new Chart(ctxIR, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'IR1', borderColor: 'red', data: [] },
+                    { label: 'IR2', borderColor: 'blue', data: [] },
+                    { label: 'IR3', borderColor: 'green', data: [] }
+                ]
+            }
+        });
+
+        const ledChart = new Chart(ctxLED, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'LED1', borderColor: 'orange', data: [] },
+                    { label: 'LED2', borderColor: 'purple', data: [] },
+                    { label: 'LED3', borderColor: 'pink', data: [] }
+                ]
+            }
+        });
+
+        const rainChart = new Chart(ctxRain, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'Rain Sensor', borderColor: 'cyan', data: [] }
+                ]
+            }
+        });
+
+        const tempChart = new Chart(ctxTemp, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'Temperature', borderColor: 'red', data: [] }
+                ]
+            }
+        });
+
+        const humidityChart = new Chart(ctxHumidity, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'Humidity', borderColor: 'blue', data: [] }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>

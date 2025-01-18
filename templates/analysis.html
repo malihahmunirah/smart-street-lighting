@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis</title>
+    <script src="{{ url_for('static', filename='chart.js') }}"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #004c99;
+            color: white;
+            padding: 1em 0;
+        }
+
+        main {
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .filter {
+            margin-bottom: 2em;
+        }
+
+        section {
+            width: 80%;
+            margin-bottom: 2em;
+            text-align: left;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+    <script>
+        async function fetchAnalysisData(period) {
+            const response = await fetch(`/analysis/data?period=${period}`);
+            const data = await response.json();
+            updateAnalysisChart(data);
+        }
+
+        function updateAnalysisChart(data) {
+            analysisChart.data.labels = data.map(item => item.timestamp);
+            analysisChart.data.datasets[0].data = data.map(item => item.LEDs);
+            analysisChart.update();
+        }
+
+        function handleFilterChange() {
+            const filter = document.getElementById('time-filter').value;
+            fetchAnalysisData(filter);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Data Analysis</h1>
+    </header>
+    <main>
+        <div class="filter">
+            <label for="time-filter">Select Time Interval: </label>
+            <select id="time-filter" onchange="handleFilterChange()">
+                <option value="hours">1 Hour</option>
+                <option value="days">1 Day</option>
+            </select>
+        </div>
+        <section>
+            <h3>LED Brightness Trend</h3>
+            <canvas id="analysisChart"></canvas>
+        </section>
+        <!-- Button to go back to Dashboard -->
+        <button onclick="window.location.href='/';">Back to Dashboard</button> <!-- Button linking back to dashboard.html -->
+    </main>
+    <script>
+        const ctxAnalysis = document.getElementById('analysisChart').getContext('2d');
+
+        const analysisChart = new Chart(ctxAnalysis, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    { label: 'LED Brightness', borderColor: 'orange', data: [] }
+                ]
+            }
+        });
+
+        fetchAnalysisData('hours');  // Default to 1 Hour data on page load
+    </script>
+</body>
+</html>
