@@ -96,14 +96,6 @@ Ensure the following are set up before running the project:
 
 ---
 
-## Future Improvements
-
-- Implement machine learning for predictive analysis.
-- Add more sensors for advanced monitoring (e.g., air quality, motion detection).
-- Enhance the user interface for better user experience.
-
----
-
 ## License
 This project is licensed under [MIT License](LICENSE).
 
@@ -111,5 +103,9 @@ This project is licensed under [MIT License](LICENSE).
 
 **Contributors:**
 - Group 19, CPC357
+1. Malihah Munirah binti Mazlan - 155447
+2. Nur Qistina binti Solleh - 155481
 
-For inquiries, please contact: [Your Email Address]
+For inquiries, please contact: 
+1. malihahmunirah@student.usm.my
+2. qistinasolleh@student.usm.my
