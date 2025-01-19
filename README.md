@@ -115,4 +115,4 @@ Ensure the following are set up before running the project:
 
 For inquiries, please contact: 
 1. malihahmunirah3@gmail.com
-2. qistina email
+2. qistinasolleh7@gmail.com
