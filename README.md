@@ -96,16 +96,11 @@ Ensure the following are set up before running the project:
 
 ---
 
-## License
-This project is licensed under [MIT License](LICENSE).
-
----
-
 **Contributors:**
 - Group 19, CPC357
 1. Malihah Munirah 
 2. Nur Qistina 
 
 For inquiries, please contact: 
-1. malihah email
-2. qistina email
+1. malihah's email
+2. qistina's email
