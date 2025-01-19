@@ -102,5 +102,5 @@ Ensure the following are set up before running the project:
 2. Nur Qistina 
 
 For inquiries, please contact: 
-1. malihah's email
-2. qistina's email
+1. malihah email
+2. qistina email
