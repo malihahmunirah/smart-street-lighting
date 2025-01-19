@@ -107,5 +107,5 @@ This project is licensed under [MIT License](LICENSE).
 2. Nur Qistina 
 
 For inquiries, please contact: 
-1. malihah email
-2. qistina email
+1. malihahmunirah@student.usm.my
+2. qistinasolleh@student.usm.my
