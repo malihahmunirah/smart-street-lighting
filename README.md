@@ -8,6 +8,18 @@ This project is a smart streetlight system designed to monitor and manage street
 
 ---
 
+## Hardware Setup
+
+Below is the hardware setup for the project (refer 'diagram' folder for more):
+
+![Hardware Setup](diagram/hardware%20setup.JPG)
+
+![Circuit Diagram](diagram/circuit%20diagram.png)
+
+![Dashboard 1](diagram/dashboard%20interfaces/dashboard%201.png)
+
+---
+
 ## Project Directory Structure
 
 ```
